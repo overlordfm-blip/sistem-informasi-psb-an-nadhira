@@ -37,5 +37,12 @@ class UserSeeder extends Seeder
             'password' => 'santri123',
             'peran' => User::PERAN_CALON_SANTRI,
         ]);
+
+        // 3. Akun santri contoh untuk pengujian
+        User::create([
+            'nama_user' => 'santri1',
+            'password' => 'santri123',
+            'peran' => User::PERAN_SANTRI,
+        ]);
     }
 }

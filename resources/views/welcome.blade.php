@@ -20,29 +20,49 @@
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
-                <nav class="flex items-center justify-end gap-4">
+                <nav class="flex items-center justify-end gap-3">
                     @auth
+                        @php
+                            $user = auth()->user();
+                            $targetUrl = match ($user->peran) {
+                                \App\Models\User::PERAN_ADMIN => route('admin.dashboard'),
+                                \App\Models\User::PERAN_CALON_SANTRI => route('status-pendaftaran'),
+                                \App\Models\User::PERAN_SANTRI => route('tagihan'),
+                                default => url('/'),
+                            };
+                        @endphp
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                            Masuk sebagai: <strong>{{ $user->nama_user }}</strong> ({{ $user->peran }})
+                        </span>
                         <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            href="{{ $targetUrl }}"
+                            class="inline-block px-4 py-2 bg-[#1F5F3B] hover:bg-[#2E7D32] text-white rounded text-sm font-semibold transition"
                         >
-                            Dashboard
+                            Halaman Saya
                         </a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="inline-block px-4 py-2 bg-[#B3261E] hover:bg-red-700 text-white rounded text-sm font-semibold transition cursor-pointer"
+                            >
+                                Keluar (Log Out)
+                            </button>
+                        </form>
                     @else
                         <a
                             href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
+                            class="inline-block px-5 py-2 bg-[#1F5F3B] hover:bg-[#2E7D32] text-white rounded text-sm font-semibold shadow-sm transition"
                         >
-                            Log in
+                            Masuk
                         </a>
 
-                        @if (Route::has('register'))
-                            <a
-                                href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
-                                Register
-                            </a>
-                        @endif
+                        <a
+                            href="{{ route('registrasi') }}"
+                            class="inline-block px-5 py-2 border-2 border-[#1F5F3B] dark:border-[#D4AF37] text-[#1F5F3B] dark:text-[#D4AF37] hover:bg-[#1F5F3B] hover:text-white rounded text-sm font-semibold transition"
+                        >
+                            Daftar Akun
+                        </a>
                     @endauth
                 </nav>
             @endif
