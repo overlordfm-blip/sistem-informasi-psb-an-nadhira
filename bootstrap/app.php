@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Middleware\PeriksaPeran;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +15,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'peran' => PeriksaPeran::class,
+        ]);
+
+        $middleware->redirectTo(
+            guests: '/login',
+            users: function () {
+                $user = Auth::user();
+                return match ($user?->peran) {
+                    User::PERAN_ADMIN => '/admin/dashboard',
+                    User::PERAN_CALON_SANTRI => '/status-pendaftaran',
+                    User::PERAN_SANTRI => '/tagihan',
+                    default => '/',
+                };
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
