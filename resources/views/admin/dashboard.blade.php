@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - An-Nadhira Hub</title>
+    <title>Dashboard Admin - {{ config('app.name', 'An-Nadhira') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8F5EE] text-[#1E1E1E] font-sans min-h-screen p-8">
