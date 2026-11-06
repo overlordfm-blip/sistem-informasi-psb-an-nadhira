@@ -1,4 +1,4 @@
-# Brief Pembuatan Website — An-Nadhira Hub
+# Brief Pembuatan Website — An-Nadhira
 
 Sistem Informasi Penerimaan Santri Baru Berbasis Web pada Pondok Pesantren An-Nadhira.
 Dibangun dengan **Laravel 13** di **Google Antigravity IDE**. Semua perancangan (kebutuhan, UML, ERD, struktur tabel, wireframe) sudah final dan menjadi acuan tunggal. Dokumen ini adalah rencana kerja; aturan yang dibaca agen ada di `AGENTS.md` dan `.agents/`.

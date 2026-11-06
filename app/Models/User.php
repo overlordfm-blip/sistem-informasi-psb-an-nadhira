@@ -12,11 +12,15 @@ class User extends Authenticatable
     use Notifiable;
 
     public const PERAN_ADMIN = 'admin';
+
     public const PERAN_CALON_SANTRI = 'calon_santri';
+
     public const PERAN_SANTRI = 'santri';
 
     protected $table = 'users';
+
     protected $primaryKey = 'id_user';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -59,6 +63,11 @@ class User extends Authenticatable
     public function pendaftar(): HasOne
     {
         return $this->hasOne(Pendaftar::class, 'id_user', 'id_user');
+    }
+
+    public function getNamaTampilanAttribute(): string
+    {
+        return $this->pendaftar?->nama_lengkap ?: $this->nama_user;
     }
 
     public function informasiPondok(): HasMany

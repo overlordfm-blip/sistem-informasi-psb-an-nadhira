@@ -1,58 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Informasi Penerimaan Santri Baru An-Nadhira
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk mendukung proses penerimaan santri baru di Pondok Pesantren An-Nadhira, Kalibeber, Mojotengah, Wonosobo. Sistem ini dikembangkan sebagai proyek kerja praktik Teknik Informatika UNSIQ.
 
-## About Laravel
+## Tujuan
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Mendukung calon santri dan administrator dalam mengelola akun, periode pendaftaran, data pendaftar, seleksi, informasi tagihan, serta status proses penerimaan melalui satu aplikasi.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.3 atau lebih baru yang didukung oleh dependency terkunci
+- Laravel 13
+- MySQL
+- Blade, Tailwind CSS, Vite, dan JavaScript
+- Laravel Socialite untuk Google OAuth
+- Midtrans Snap untuk pembayaran dalam mode Sandbox
 
-## Learning Laravel
+Versi dependency yang digunakan dikunci melalui `composer.lock` dan `package-lock.json`. `vendor/` dan `node_modules/` tidak disimpan dalam repository.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Fitur
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Registrasi dan login lokal berbasis nama pengguna dan password
+- Peran admin, calon santri, dan santri
+- Pengelolaan periode pendaftaran dan formulir pendaftaran
+- Pemantauan status pendaftaran dan pengelolaan pendaftar oleh admin
+- Pilihan dan pengelolaan tes seleksi
+- Tagihan pendaftaran dan syahriyah, dengan notifikasi pembayaran Midtrans
+- Penautan dan login Google untuk akun yang memenuhi ketentuan aplikasi
+- Alur pemulihan akun
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Fitur dan integrasi harus tetap diuji pada environment masing-masing. Keberadaan source code atau automated test tidak berarti callback Google maupun transaksi/webhook Midtrans telah diverifikasi end-to-end.
 
-## Agentic Development
+## Integrasi eksternal
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Midtrans
+
+Konfigurasi menggunakan environment variables. Gunakan Sandbox untuk pengembangan dan pengujian; jangan memasukkan Server Key atau credential lain ke Git, dokumentasi publik, maupun JavaScript selain Client Key yang memang ditujukan untuk browser.
+
+### Google OAuth
+
+Konfigurasi menggunakan Laravel Socialite dan environment variables. Google OAuth berada dalam mode Testing sesuai konfigurasi proyek saat ini. Atur authorized redirect URI dan daftar pengguna uji di Google Cloud Console secara terpisah. Jangan commit Client Secret.
+
+## Persyaratan pengembangan
+
+- PHP 8.3+, Composer, dan extension yang dibutuhkan Laravel/dependency, termasuk PDO MySQL
+- MySQL
+- Node.js dan npm untuk memasang dependency frontend serta membangun aset
+- Git
+
+## Instalasi lokal
+
+1. Clone repository dan masuk ke direktori proyek.
+2. Pasang dependency PHP:
+
+   ```bash
+   composer install
+   ```
+
+3. Siapkan environment lokal. Pada Windows PowerShell:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   Isi koneksi MySQL dan konfigurasi lokal yang diperlukan. Jangan menyalin `.env` ke repository. Buat `APP_KEY` satu kali untuk environment baru:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+   Jangan mengganti key pada environment yang telah menyimpan data terenkripsi tanpa analisis dampak.
+
+4. Pasang dependency frontend dan build aset:
+
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+5. Siapkan database MySQL kosong khusus development dan periksa konfigurasi sebelum menjalankan migration:
+
+   ```bash
+   php artisan migrate:status
+   php artisan migrate
+   ```
+
+   Jangan jalankan migration terhadap database yang berisi data penting tanpa backup yang dapat dipulihkan dan review migration terlebih dahulu. Seeder tidak dijalankan otomatis; tinjau seeder dan data yang dibuat sebelum menjalankannya.
+
+6. Jalankan server development:
+
+   ```bash
+   php artisan serve
+   ```
+
+## Konfigurasi environment
+
+Gunakan `.env.example` sebagai daftar awal variabel dan isi `.env` lokal tanpa membagikannya. Variabel penting mencakup:
+
+- `APP_ENV`, `APP_DEBUG`, `APP_URL`, `APP_KEY`
+- `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
+- `SESSION_DRIVER=file`, `CACHE_STORE=file`, `QUEUE_CONNECTION=sync`
+- `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`, `MIDTRANS_IS_PRODUCTION=false`
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`
+
+Jangan menyimpan credential asli, password, token, private key, atau data pribadi di repository. Untuk Google dan Midtrans, pertahankan Testing/Sandbox kecuali ada keputusan terpisah untuk mengubah mode.
+
+## Migration dan data
+
+Migration mendefinisikan skema aplikasi. Untuk development gunakan database lokal kosong yang memang dibuat untuk pengujian. Sebelum migration terhadap database berisi data, buat dan uji backup, periksa `php artisan migrate:status`, lalu review semua migration pending. Jangan menjalankan `migrate:fresh` atau `db:wipe` pada data yang perlu dipertahankan.
+
+Data privat runtime, termasuk tautan Google, catatan penolakan, dan jadwal tes, disimpan pada `storage/app/private/` dan tidak boleh dimasukkan ke repository. Pastikan aturan `.gitignore` tetap mengecualikan data tersebut.
+
+## Automated test
+
+Jalankan seluruh suite dengan:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan test
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Gunakan environment testing yang terpisah. Jangan menjalankan tes atau seeder terhadap database produksi.
 
-## Contributing
+## Struktur direktori
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```text
+app/          Logika aplikasi, controller, model, service
+bootstrap/    Bootstrap Laravel
+config/       Konfigurasi aplikasi dan integrasi
+database/     Migration, factory, dan seeder
+lang/         Bahasa dan pesan aplikasi
+public/       Entry point web dan aset hasil build
+resources/    Blade, CSS, dan JavaScript sumber
+routes/       Definisi route web dan console
+storage/      File runtime; data privat diabaikan Git
+tests/        Automated test
+```
 
-## Code of Conduct
+Hasil build yang saat ini tersedia di `public/build/` dipertahankan dalam repository agar dapat dipakai pada lingkungan yang tidak menyediakan Node.js. `node_modules/` tetap dikecualikan.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Status dan batasan
 
-## Security Vulnerabilities
+Integrasi Midtrans tetap Sandbox dan Google OAuth tetap Testing. Callback eksternal dan proses pembayaran perlu diverifikasi dengan credential uji yang sah pada environment yang sesuai. Fitur upload dokumen persyaratan calon santri merupakan rencana pengembangan lanjutan, bukan bagian dari versi aplikasi saat ini.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Repository ini adalah source code proyek akademik; penggunaan dan redistribusi harus mengikuti persetujuan pemilik proyek dan kebijakan institusi.

@@ -1,112 +1,69 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - {{ config('app.name', 'An-Nadhira') }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-[#F8F5EE] text-[#1E1E1E] font-sans min-h-screen flex flex-col justify-between py-8 sm:px-6 lg:px-8">
-    <!-- Top Nav / Back Link -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-md px-4 flex justify-between items-center text-sm">
-        <a href="{{ route('beranda') }}" class="inline-flex items-center text-[#1F5F3B] hover:text-[#2E7D32] font-semibold transition">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Kembali ke Beranda
-        </a>
-        <a href="{{ route('registrasi') }}" class="text-[#1F5F3B] hover:underline font-semibold">
-            Daftar Akun Baru
-        </a>
-    </div>
-
-    <!-- Main Login Card -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-md my-auto">
-        <div class="text-center mb-6">
-            <h2 class="font-serif text-3xl font-bold tracking-tight text-[#1F5F3B]">
-                Pondok Pesantren An-Nadhira
-            </h2>
-            <p class="mt-1 text-sm text-gray-600">
-                Sistem Informasi Penerimaan Santri Baru
-            </p>
+<x-layout.publik title="Masuk">
+    <section class="mx-auto grid min-h-[calc(100vh-15rem)] w-full max-w-6xl items-center gap-8 px-5 py-10 sm:py-14 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
+        <div class="hidden min-h-[34rem] flex-col justify-between rounded-sm bg-primer p-8 text-white lg:flex">
+            <div class="flex size-20 items-center justify-center rounded-full bg-permukaan">
+                <img src="{{ asset('images/logo-128.png') }}" alt="" class="size-16 object-contain">
+            </div>
+            <div>
+                <p class="text-sm font-bold uppercase text-white/75">Pondok Pesantren An-Nadhira</p>
+                <h1 class="mt-3 font-serif text-4xl font-bold">Penerimaan Santri Baru</h1>
+                <p class="mt-4 text-base leading-7 text-white/85">Masuk untuk melanjutkan proses pendaftaran atau mengelola tagihan Anda.</p>
+            </div>
+            <p class="text-base">Kalibeber, Mojotengah, Wonosobo</p>
         </div>
 
-        <div class="bg-white py-8 px-6 shadow-md rounded-xl sm:px-10 border border-[#E3DCCB]">
-            <div class="text-center mb-6">
-                <h1 class="font-serif text-2xl font-bold text-[#1F5F3B] tracking-wide">MASUK</h1>
-                <div class="w-16 h-1 bg-[#D4AF37] mx-auto mt-2 rounded"></div>
+        <div class="mx-auto w-full max-w-xl rounded-sm border border-garis bg-permukaan p-6 shadow-sm sm:p-9">
+            <div class="mb-7">
+                <p class="text-sm font-bold uppercase text-sekunder">Akun An-Nadhira</p>
+                <h2 class="mt-2 font-serif text-3xl font-bold text-primer">Masuk</h2>
+                <p class="mt-2 text-base">Masuk dengan nama user dan password, atau gunakan Gmail yang sudah tertaut.</p>
             </div>
 
-            @if (session('sukses'))
-                <div class="mb-4 p-3 bg-green-50 border border-green-200 text-[#1F5F3B] text-sm rounded flex items-center gap-2">
-                    <svg class="w-5 h-5 flex-shrink-0 text-[#2E7D32]" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>{{ session('sukses') }}</span>
-                </div>
-            @endif
+            <x-notifikasi class="mb-6" />
 
-            @if ($errors->any())
-                <div class="mb-4 p-3 bg-red-50 border border-red-200 text-[#B3261E] text-sm rounded">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <a href="{{ route('auth.google.login') }}" class="mb-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm border border-primer px-5 py-2 font-semibold text-primer hover:bg-latar">
+                <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.09-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84A11 11 0 0 0 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.15a11 11 0 0 0 0 9.88l3.69-2.84z" />
+                    <path fill="#EA4335" d="M12 5.36c1.62 0 3.06.56 4.21 1.64l3.15-3.15A10.55 10.55 0 0 0 12 1a11 11 0 0 0-9.85 6.06l3.69 2.84c.87-2.6 3.3-4.54 6.16-4.54z" />
+                </svg>
+                Masuk dengan Gmail
+            </a>
+            <p class="mb-5 text-center text-sm text-teks/70">atau masuk dengan nama user dan password</p>
 
             <form action="{{ route('login.proses') }}" method="POST" class="space-y-5">
                 @csrf
 
-                <div>
-                    <label for="nama_user" class="block text-xs font-bold uppercase tracking-wider text-gray-700">
-                        Nama User
-                    </label>
-                    <div class="mt-1">
-                        <input id="nama_user" name="nama_user" type="text" autocomplete="username" required
-                            value="{{ old('nama_user') }}"
-                            placeholder="Masukkan nama user Anda"
-                            class="block w-full rounded border border-[#E3DCCB] px-3.5 py-2.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-[#1F5F3B] focus:outline-none focus:ring-1 focus:ring-[#1F5F3B] sm:text-sm">
-                    </div>
-                </div>
+                <x-input
+                    name="nama_user"
+                    label="Nama User"
+                    type="text"
+                    autocomplete="username"
+                    placeholder="Masukkan nama user Anda"
+                    required
+                />
 
-                <div>
-                    <label for="password" class="block text-xs font-bold uppercase tracking-wider text-gray-700">
-                        Password
-                    </label>
-                    <div class="mt-1">
-                        <input id="password" name="password" type="password" autocomplete="current-password" required
-                            placeholder="Masukkan password Anda"
-                            class="block w-full rounded border border-[#E3DCCB] px-3.5 py-2.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-[#1F5F3B] focus:outline-none focus:ring-1 focus:ring-[#1F5F3B] sm:text-sm">
-                    </div>
-                </div>
+                <x-input
+                    name="password"
+                    label="Password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Masukkan password Anda"
+                    required
+                />
 
-                <div>
-                    <button type="submit"
-                        class="flex w-full items-center justify-center gap-2 rounded bg-[#1F5F3B] px-4 py-3 text-base font-bold text-white shadow hover:bg-[#2E7D32] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F5F3B] transition cursor-pointer">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                        </svg>
-                        MASUK KE AKUN
-                    </button>
-                </div>
+                <x-tombol type="submit" class="w-full gap-2">MASUK KE AKUN</x-tombol>
             </form>
 
-            <div class="mt-6 border-t border-[#E3DCCB] pt-4 text-center">
-                <a href="{{ route('registrasi') }}" class="text-xs font-bold text-[#1F5F3B] hover:text-[#2E7D32] hover:underline uppercase tracking-wide">
-                    Belum punya akun? Daftar sekarang
-                </a>
-            </div>
-        </div>
-    </div>
+            <p class="mt-5 text-center text-base">
+                <a href="{{ route('lupa-akun') }}" class="font-semibold text-primer underline underline-offset-4 hover:text-sekunder">Lupa akun atau password?</a>
+            </p>
 
-    <!-- Footer note -->
-    <div class="text-center text-xs text-gray-500 py-4">
-        &copy; {{ date('Y') }} {{ config('app.name', 'An-Nadhira') }}. Kalibeber, Mojotengah, Wonosobo.
-    </div>
-</body>
-</html>
+            <p class="mt-6 border-t border-garis pt-5 text-center text-base">
+                Belum punya akun?
+                <a href="{{ route('registrasi') }}" class="font-semibold text-primer underline underline-offset-4 hover:text-sekunder">Daftar sekarang</a>
+            </p>
+        </div>
+    </section>
+</x-layout.publik>

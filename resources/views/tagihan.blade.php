@@ -24,7 +24,7 @@
             
             <div class="flex items-center space-x-4">
                 <div class="hidden sm:block text-right">
-                    <p class="text-sm font-semibold leading-tight">{{ auth()->user()->nama_user }}</p>
+                    <p class="text-sm font-semibold leading-tight">{{ auth()->user()->nama_tampilan }}</p>
                     <p class="text-xs text-gray-200">Santri Aktif</p>
                 </div>
 
@@ -50,7 +50,7 @@
             <div class="border-b border-[#E3DCCB] pb-4 mb-6">
                 <h1 class="font-serif text-2xl sm:text-3xl font-bold text-[#1F5F3B]">Tagihan Santri</h1>
                 <p class="text-sm text-gray-600 mt-1">
-                    Selamat datang, <strong>{{ auth()->user()->nama_user }}</strong>. Anda login dengan hak akses santri/wali santri.
+                    Selamat datang, <strong>{{ auth()->user()->nama_tampilan }}</strong>. Anda login dengan hak akses santri/wali santri.
                 </p>
             </div>
 
